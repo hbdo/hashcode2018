@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.awt.Point;
-import Car;
-import Ride;
+
 
 public class Grader {
 
@@ -50,13 +49,16 @@ public class Grader {
 			for(int j=0; j<numRides; j++) {
 				rd.add(rides.get(sc.nextInt()));
 			}
-			vehicles.add(new Car())
+			vehicles.add(new Car());
 		}
 		
 		
 		
 	}
 	
-	public int gradeCalc(ArrayList<Ride> r, )
+	public int gradeCalc(ArrayList<Ride> r ) {
+		
+		return 0;
+	}
 	
 }

@@ -12,6 +12,11 @@ public class Car {
 		this.current_timestep = 0;
 	}
 	
+	public Car(int id, ArrayList<Ride> rides) {
+		this.rides = rides;
+		this.id = id;
+	}
+	
 	public int get_ride_count() {
 		return this.rides.size();
 	}
