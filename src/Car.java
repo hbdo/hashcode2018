@@ -29,4 +29,16 @@ public class Car {
 			r.print();
 		}
 	}
+
+	protected void move(int dest_x, int dest_y) {
+		this.current_timestep += Math.abs(dest_x - this.curPos_x) + Math.abs(dest_y - this.curPos_y);
+		this.curPos_x=dest_x;
+		this.curPos_y=dest_y;
+	}
+
+	protected int expectedArrival(Ride r) {
+		int temp = current_timestep;
+		temp += Math.abs(r.end_x - this.curPos_x) + Math.abs(r.end_y - this.curPos_y);
+		return temp;
+	}
 }

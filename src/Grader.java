@@ -64,43 +64,26 @@ public class Grader {
 	public static int gradeCalc(ArrayList<Car> c) {
 		int grade = 0;
 		boolean isBonus = false;
-		boolean isExecuted = true;
 		for (Car car : c) {
-			for (Ride ride : car.rides) { 
-				int remainingDist = ride.get_distance();
-				car.current_timestep += distanceCalc(car, ride);
-				if (ride.earliest_start > car.current_timestep) {
-					car.current_timestep = ride.earliest_start;
-					while(ride.ride(car.current_timestep) && remainingDist >0) {
-						car.current_timestep += 1;
-						remainingDist -= 1;
+			for (Ride ride : car.rides) {
+				if (ride.latest_finish > car.expectedArrival(ride)) {
+					if (ride.earliest_start > car.current_timestep) {
+						car.current_timestep = ride.earliest_start;
+						car.move(ride.end_x, ride.end_y);
+						isBonus = true;
+					} else if (ride.latest_finish == car.expectedArrival(ride)) {
+						car.move(ride.end_x, ride.end_y);
+						isBonus = true;
+					} else {
+						car.move(ride.end_x, ride.end_y);
+						isBonus = false;
 					}
-					isBonus = true;
-					isExecuted = true;
-				} else if (ride.earliest_start == car.current_timestep) {
-					while(ride.ride(car.current_timestep) && remainingDist >0) {
-						car.current_timestep += 1;
-						remainingDist -= 1;
-					}
-					isBonus = true;
-					isExecuted = true;
-				} else {
-					while(ride.ride(car.current_timestep) && remainingDist >0) {
-						car.current_timestep += 1;
-						remainingDist -= 1;
-					}
-					isExecuted = true;
-					isBonus = true;
-				}
-				if (ride.latest_finish > car.current_timestep)
-					isExecuted = false;
-				if (isExecuted) {
 					grade += ride.get_distance();
 					if (isBonus)
 						grade += bonus;
+					System.out.println(grade);
 				}
 			}
-
 		}
 		return grade;
 	}
