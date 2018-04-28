@@ -25,4 +25,8 @@ public class Ride {
 		System.out.println("Ride "+ this.id + " start x " + this.start_x + " start y " + this.start_y + " end x " + this.end_x + " end y " + this.end_y + " earliest start " + this.earliest_start + " latest finish " + this.latest_finish);
 	}
 
+	public boolean ride(int curtime) {
+		if(this.latest_finish > curtime) return false;
+		return true;
+	}
 }

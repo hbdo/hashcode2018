@@ -5,6 +5,8 @@ public class Car {
 	public int id, current_timestep;
 	public ArrayList<Ride> rides;
 	public static int ID = 0;
+	public int curPos_x = 0;
+	public int curPos_y = 0;
 
 	public Car() {
 		this.id = ID++;

@@ -15,7 +15,7 @@ public class Grader {
 	static ArrayList<Ride> rides = new ArrayList<Ride>();
 	static ArrayList<Car> vehicles = new ArrayList<Car>();
 
-	public static void main(String[] args) throws IOException {	
+	public static void main(String[] args) throws IOException {
 		String inputFileName = "a_example.in";
 		String outputFileName = inputFileName.replace("in", "out");
 		File inputFile = new File(inputFileName);
@@ -52,33 +52,47 @@ public class Grader {
 			vehicles.add(new Car(i, rd));
 			vehicles.get(i).print();
 		}
-		
+
 		System.out.println("Grade " + gradeCalc(vehicles));
 
 	}
 
+	public static int distanceCalc(Car c, Ride r) {
+		return Math.abs(r.start_x - c.curPos_x) + Math.abs(r.start_y - c.curPos_y);
+	}
+
 	public static int gradeCalc(ArrayList<Car> c) {
 		int grade = 0;
-		int step = 0;
 		boolean isBonus = false;
 		boolean isExecuted = true;
 		for (Car car : c) {
-			for (Ride ride : car.rides) {
-				if (ride.earliest_start > step) {
-					step = ride.earliest_start;
-					step += ride.get_distance();
+			for (Ride ride : car.rides) { 
+				int remainingDist = ride.get_distance();
+				car.current_timestep += distanceCalc(car, ride);
+				if (ride.earliest_start > car.current_timestep) {
+					car.current_timestep = ride.earliest_start;
+					while(ride.ride(car.current_timestep) && remainingDist >0) {
+						car.current_timestep += 1;
+						remainingDist -= 1;
+					}
 					isBonus = true;
 					isExecuted = true;
-				} else if (ride.earliest_start == step) {
-					step += ride.get_distance();
+				} else if (ride.earliest_start == car.current_timestep) {
+					while(ride.ride(car.current_timestep) && remainingDist >0) {
+						car.current_timestep += 1;
+						remainingDist -= 1;
+					}
 					isBonus = true;
 					isExecuted = true;
 				} else {
-					step += ride.get_distance();
+					while(ride.ride(car.current_timestep) && remainingDist >0) {
+						car.current_timestep += 1;
+						remainingDist -= 1;
+					}
 					isExecuted = true;
-					isBonus = false;
+					isBonus = true;
 				}
-				if (ride.latest_finish > step)
+				if (ride.latest_finish > car.current_timestep)
 					isExecuted = false;
 				if (isExecuted) {
 					grade += ride.get_distance();
